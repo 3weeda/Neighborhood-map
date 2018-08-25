@@ -10,7 +10,7 @@ class App extends Component {
     // A state representing the array of markers made
     markers: [],
     // A state representing the array of filtered venues
-    filteredVenues:[],
+    searchedVenues:[],
   }
   // Asynchronous request from foursquare API
   componentDidMount() {
@@ -202,7 +202,7 @@ class App extends Component {
     )
     // Building markers with infowindows
     var infowindow = new window.google.maps.InfoWindow();
-    this.state.filteredVenues.map(thisVenue => {
+    this.state.searchedVenues.map(thisVenue => {
       var content = `${thisVenue.venue.name}`;
       var marker = new window.google.maps.Marker({
         position: {lat: thisVenue.venue.location.lat, lng: thisVenue.venue.location.lng},
@@ -241,7 +241,7 @@ class App extends Component {
       .then(response =>{
         this.setState({
           venues:response.data.response.groups[0].items,
-          filteredVenues:response.data.response.groups[0].items
+          searchedVenues:response.data.response.groups[0].items
         },this.drawMap())//To delay the drawing to be after the venues are ready
       })
       .catch(error =>{
@@ -250,11 +250,11 @@ class App extends Component {
     }
 
     // Updating venues on search input
-     updateVenues = (arrTitles) => {
+     updateVenues = (query) => {
        let currentMarkers = [];
-       currentMarkers = this.state.markers.filter(marker => arrTitles.includes(marker.title))
+       currentMarkers = this.state.markers.filter(marker => query.includes(marker.title))
        this.state.markers.forEach(marker => {
-         if(arrTitles.includes(marker.title) === true){
+         if(query.includes(marker.title) === true){
            marker.setVisible(true);
          }else{
            marker.setVisible(false);

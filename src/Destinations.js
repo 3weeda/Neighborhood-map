@@ -21,11 +21,11 @@ class Destinations extends Component {
   // A function handling updating the value of the search query to match user input
   updateQuery = (query) => {
       this.setState({ query })
-      let filteredVenues
+      let searchedVenues
       const match = new RegExp(escapeRegExp(query), 'i');
-      filteredVenues = this.props.venues.filter((place) => match.test(place.venue.name))
-      this.setState({ venues: filteredVenues })
-      let back = filteredVenues.map(place => place.venue.name)
+      searchedVenues = this.props.venues.filter((place) => match.test(place.venue.name))
+      this.setState({ venues: searchedVenues })
+      let back = searchedVenues.map(place => place.venue.name)
       this.props.updateVenues(back)
       // Keep all markers if empty query
       if (query.length < 1) {
